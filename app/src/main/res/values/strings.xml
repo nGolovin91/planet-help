@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">PlanetHelp</string>
     <string name="title_activity_maps">Map</string>
+    
+    <string name="volunteering">Только волонтёрство</string>
+    <string name="add_event_btn_text">Добавить Событие</string>
+
+    <string name="event_menu_title">Фильтр</string>
+
+    <string name="target">Цели</string>
+    <string name="sum_title">Необходимая сумма</string>
+    <string name="gift_title">Награды за пожертвование</string>
 </resources>

@@ -19,10 +19,22 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+        maven { url "https://jitpack.io" }
+        maven { url "https://maven.google.com" }
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    /* Network */
+    retrofit_ver = "2.4.0"
+    okhttp_ver = "3.10.0"
+
+    /* Dagger */
+    dagger_ver = "2.11"
+
+    moxy_ver = "1.5.3"
 }
