@@ -10,4 +10,19 @@
     <string name="target">Цели</string>
     <string name="sum_title">Необходимая сумма</string>
     <string name="gift_title">Награды за пожертвование</string>
+
+    <string name="base_information_title">Базовая информация</string>
+    <string name="title_hint">Заголовок</string>
+    <string name="where_event">Где происходит?</string>
+    <string name="where_hint">Адрес / Локация</string>
+    <string name="event_type">Тип мероприятия</string>
+    <string name="event_type_voluntare">Волонтёрство</string>
+    <string name="event_type_money">Сбор денежных средств</string>
+    <string name="how_much_valunter">Сколько нужно волонтёров? *</string>
+    <string name="people_count_hint">Количество человек</string>
+    <string name="target_title">Цели *</string>
+    <string name="target_hint">Для чего нужна помощь?</string>
+    <string name="add_achivment">Добавить награду</string>
+    <string name="category_hint">Категория</string>
+    <string name="photo_hint">Фото</string>
 </resources>

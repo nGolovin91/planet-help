@@ -26,16 +26,14 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.yoite.planethelp.BaseActivity
 import com.yoite.planethelp.PlanetHelpApp
 import com.yoite.planethelp.R
 import com.yoite.planethelp.common.OnItemSelectedListener
 import com.yoite.planethelp.event.EventActivity
+import com.yoite.planethelp.eventcreate.EventCreateActivity
 import com.yoite.planethelp.events.repository.models.CategoryType
 import com.yoite.planethelp.events.repository.models.EventModel
 import com.yoite.planethelp.events.repository.models.GoalType
@@ -43,7 +41,7 @@ import com.yoite.planethelp.utils.*
 import javax.inject.Inject
 
 
-class EventsActivity: BaseActivity(), OnMapReadyCallback, EventsView {
+class EventsActivity: BaseActivity(), OnMapReadyCallback, EventsView, GoogleMap.OnMarkerClickListener {
 
     companion object {
         const val GPS_PERMISSION = Manifest.permission.ACCESS_FINE_LOCATION
@@ -60,11 +58,15 @@ class EventsActivity: BaseActivity(), OnMapReadyCallback, EventsView {
     private lateinit var listBtn: ImageView
     private lateinit var voluntaerSwitch: SwitchCompat
     private lateinit var mapListContainer: ConstraintLayout
+    private lateinit var addEventButton: TextView
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
     private lateinit var eventRecycler: RecyclerView
     private lateinit var eventAdapter: EventsAdapter
+
+    private var markersMap = HashMap<Marker, EventModel>()
+    private var selectedMarker: Marker? = null
 
     @Inject
     @InjectPresenter
@@ -141,11 +143,18 @@ class EventsActivity: BaseActivity(), OnMapReadyCallback, EventsView {
         checkPermission()
     }
 
+    override fun onMarkerClick(marker: Marker?): Boolean {
+        presenter.onEventAction(markersMap[marker]!!)
+        return false
+    }
+
     override fun onMapReady(map: GoogleMap?) {
         map?.let {
             googleMap = it
             it.setMapStyle(MapStyleOptions.loadRawResourceStyle(this@EventsActivity, R.raw.style_json))
             checkPermission()
+
+            googleMap!!.setOnMarkerClickListener(this)
         }
     }
 
@@ -241,6 +250,7 @@ class EventsActivity: BaseActivity(), OnMapReadyCallback, EventsView {
         listBtn = findViewById(R.id.activity_events_list_selector)
         voluntaerSwitch = findViewById(R.id.activity_events_only_volunteer_switch)
         mapListContainer = findViewById(R.id.activity_events_map_list_selectors_container)
+        addEventButton = findViewById(R.id.activity_events_add_button)
 
         mapBtn.setOnClickListener {
             presenter.onMapAction()
@@ -265,6 +275,10 @@ class EventsActivity: BaseActivity(), OnMapReadyCallback, EventsView {
                 presenter.onEventAction(t)
             }
         })
+
+        addEventButton.setOnClickListener {
+            presenter.onAddEventAction()
+        }
 
         eventRecycler = findViewById(R.id.events_activity_event_list)
         eventRecycler.layoutManager = LinearLayoutManager(this)
@@ -353,12 +367,14 @@ class EventsActivity: BaseActivity(), OnMapReadyCallback, EventsView {
                 val b = loadBitmapFromView(v)
 
                 if (b != null) {
-                    googleMap!!.addMarker(
-                        MarkerOptions()
-                            .title(it.caption)
-                            .icon(BitmapDescriptorFactory.fromBitmap(b))
-                            .position(LatLng(it.lat, it.long))
-                    )
+
+                    val marker = googleMap!!.addMarker(MarkerOptions().apply {
+                        title("")
+                        position(LatLng(it.lat, it.long))
+                        icon(BitmapDescriptorFactory.fromBitmap(b))
+                    })
+
+                    markersMap[marker] = it
                 }
             }
         }
@@ -372,6 +388,11 @@ class EventsActivity: BaseActivity(), OnMapReadyCallback, EventsView {
         val intent = Intent(this, EventActivity::class.java).apply{
             putExtra(EventActivity.MODEL_TAG, event)
         }
+        startActivity(intent)
+    }
+
+    override fun showCreateEventForm() {
+        val intent = Intent(this, EventCreateActivity::class.java)
         startActivity(intent)
     }
 }

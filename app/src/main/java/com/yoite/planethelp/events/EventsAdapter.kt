@@ -59,7 +59,7 @@ class EventsAdapter(
                     goalProgressMoney.visibility = View.VISIBLE
                     if (model.goalTarget != 0) {
                         onRenderFinished(goalTotalMoney, Runnable {
-                            goalProgressMoney.minimumWidth = goalTotalMoney.width * (model.goalCount / model.goalTarget)
+                            goalProgressMoney.minimumWidth = (goalTotalMoney.width.toFloat() * (model.goalCount.toFloat() / model.goalTarget.toFloat())).toInt()
                             goalProgressMoney.invalidate()
                         })
                     } else {

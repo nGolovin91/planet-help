@@ -1,12 +1,15 @@
 package com.yoite.planethelp.event
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yoite.planethelp.BaseActivity
 import com.yoite.planethelp.R
+import com.yoite.planethelp.events.repository.models.CategoryType
 import com.yoite.planethelp.events.repository.models.EventModel
 import com.yoite.planethelp.events.repository.models.GoalType
 import com.yoite.planethelp.utils.onRenderFinished
@@ -104,6 +107,38 @@ class EventActivity : BaseActivity() {
 
         photoRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         photoRecycler.adapter = photoAdapter
+
+        initToolBar(when (eventModel.category) {
+            CategoryType.Ecology -> "Экология"
+            CategoryType.Animals -> "Животные"
+            CategoryType.Emergency -> "Опасности"
+            CategoryType.Health -> "Здоровье"
+            CategoryType.Homeless -> "Общество"
+            CategoryType.Charity -> "Волонтерство"
+            CategoryType.Children -> "Дети"
+            else -> ""
+        })
+    }
+
+    private fun initToolBar(eventName: String) {
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayShowTitleEnabled(true)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setHomeButtonEnabled(true)
+        supportActionBar!!.setTitle(eventName)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
     }
 
 }

@@ -12,7 +12,9 @@
     <color name="red">#FF5789</color>
     <color name="transparent">#00000000</color>
 
+
     <color name="blue_invisible">#1A565DFF</color>
+    <color name="black_fifth">#80000000</color> //50% opacity
     <color name="black_shadow">#66000000</color> //40% opacity
     <color name="black_phantom">#33000000</color> // 20% opacity
 

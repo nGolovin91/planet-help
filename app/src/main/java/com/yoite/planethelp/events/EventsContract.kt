@@ -14,6 +14,8 @@ interface EventsView: MvpView {
 
     fun showFilters()
     fun showEvent(event: EventModel)
+
+    fun showCreateEventForm()
 }
 
 interface EventsPresenter {

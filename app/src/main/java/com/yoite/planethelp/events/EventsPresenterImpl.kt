@@ -63,7 +63,7 @@ class EventsPresenterImpl
     }
 
     override fun onAddEventAction() {
-
+        viewState.showCreateEventForm()
     }
 
     override fun onFilterAction() {
